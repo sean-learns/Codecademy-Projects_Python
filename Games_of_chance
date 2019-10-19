@@ -1,0 +1,63 @@
+import random
+
+money = 100
+
+#Write your game of chance functions here
+# Heads or Tails Game
+#Still needs an execute function to connect each play together.
+def heads_or_tails(guess, bet):  
+    flip = random.randint(0,1)
+    if flip == 0 and guess == "Heads":
+        new_total = money + bet
+        print("You bet: "+str(bet))
+        print("You won! You now have "+str(new_total)+" in the bank!")
+        return new_total
+    elif flip == 1 and guess == "Tails":
+        new_total = money + bet
+        print("You bet: " +str(bet))
+        print("You won! You now have "+str(new_total)+" in the bank!")
+        return new_total
+    else:
+        new_total = money - bet
+        if new_total <= 0:
+            print("You bet: " +str(bet))
+            print("You lost. It looks like you are all out of earnings! Sorry!")
+        else:
+            print("You bet: " + str(bet))
+            print("You lost. Try again! You still have "+str(new_total)+" to play with!")
+        
+# Cho-Han Game Function
+# Player guesses either 'Odd' or 'Even' to guess the Sum of two 6 sided Dice
+def cho_han(guess, bet):
+    dice1 = random.randint(1,6)
+    dice2 = random.randint(1,6)
+    dice_sum = dice1 + dice2
+    print("Sum of Dice: "+str(dice_sum))
+    if guess == 'Even' and dice_sum % 2 == 0:
+        new_total = money + bet
+        print("You bet: "+str(bet))
+        print("You won! You now have "+str(new_total)+" in the bank!")
+        return new_total
+    elif guess == 'Odd' and dice_sum % 2 != 0:
+        new_total = money + bet
+        print("You bet: "+str(bet))
+        print("You won! You now have "+str(new_total)+" in the bank!")
+        return new_total
+    else:
+        new_total = money - bet
+        if new_total <= 0:
+            print("You bet: " +str(bet))
+            print("You lost. It looks like you are all out of earnings! Sorry!")
+        else:
+            print("You bet: " + str(bet))
+            print("You lost. Try again! You still have "+str(new_total)+" to play with!")
+
+
+
+
+
+#Call your game of chance functions here
+heads_or_tails("Heads", 10)
+heads_or_tails("Tails", 100)
+cho_han('Odd', 45)
+cho_han('Even', 93)
