@@ -1,0 +1,99 @@
+import codecademylib
+import pandas as pd
+
+ad_clicks = pd.read_csv('ad_clicks.csv')
+
+ad_clicks.groupby('utm_source')\
+  .user_id.count()\
+  .reset_index()
+
+ad_clicks['is_clicks'] = ~ad_clicks\
+  .ad_click_timestamp.isnull()
+
+clicks_by_source = ad_clicks\
+  .groupby(['utm_source',
+            'is_clicks'])\
+  .user_id.count()\
+  .reset_index()
+
+clicks_pivot = clicks_by_source\
+  .pivot(index = 'utm_source',
+        columns = 'is_clicks',
+        values = 'user_id')\
+  .reset_index()
+
+clicks_pivot['percent_clicked'] = \
+  clicks_pivot[True]/ \
+  (clicks_pivot[True] +
+  clicks_pivot[False])
+
+print(ad_clicks.head())
+print(clicks_by_source)
+print(clicks_pivot)
+
+print(ad_clicks.groupby('experimental_group').user_id.count())
+
+unpivoted = ad_clicks.groupby(['experimental_group', 'is_clicks']).user_id.count().reset_index()
+
+pivoted = unpivoted\
+  .pivot(columns = 'experimental_group',
+        index = 'is_clicks',
+        values = 'user_id')\
+  .reset_index()
+
+print(pivoted)
+
+a_clicks = ad_clicks[
+  ad_clicks.experimental_group == 'A'
+]
+
+b_clicks = ad_clicks[
+  ad_clicks.experimental_group == 'B'
+]
+
+day_unpivot = ad_clicks\
+  .groupby(['is_clicks', 'day'])\
+  .user_id.count()\
+  .reset_index()
+
+day_pivot = day_unpivot.pivot(
+  columns = 'is_clicks',
+  index = 'day',
+  values = 'user_id')\
+  .reset_index()
+
+day_pivot['success_rate'] = \
+  day_pivot[True]/ \
+  (day_pivot[True] + day_pivot[False])
+
+a_clicks_pivot = a_clicks\
+  .groupby(['is_clicks', 'day'])\
+  .user_id.count()\
+  .reset_index()\
+  .pivot(
+  columns = 'is_clicks',
+  index = 'day',
+  values = 'user_id')\
+  .reset_index()
+
+a_clicks_pivot['success_rate'] = \
+  a_clicks_pivot[True]/ \
+  (a_clicks_pivot[True] + a_clicks_pivot[False])
+
+b_clicks_pivot = b_clicks\
+  .groupby(['is_clicks', 'day'])\
+  .user_id.count()\
+  .reset_index()\
+  .pivot(
+  columns = 'is_clicks',
+  index = 'day',
+  values = 'user_id')\
+  .reset_index()
+
+b_clicks_pivot['success_rate'] = \
+  b_clicks_pivot[True]/ \
+  (b_clicks_pivot[True] + b_clicks_pivot[False])
+
+print(day_pivot)
+print(a_clicks_pivot)
+print(b_clicks_pivot)
