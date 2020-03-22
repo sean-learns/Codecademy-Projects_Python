@@ -1,0 +1,40 @@
+import codecademylib3_seaborn
+import pandas as pd
+import numpy as np
+from weather_data import london_data
+
+first_date = london_data['Time'][0]
+last_date = london_data['Time'][len(london_data)-1]
+
+
+temp = london_data["TemperatureC"]
+average_temp = np.average(temp)
+temperature_var = np.var(temp)
+
+temperature_standard_deviation = np.std(temp)
+#print(temperature_standard_deviation)
+
+#print("The variance of temperatures collected from " + first_date + " to " + last_date + " was " + str(round(temperature_var,2)) + " with a standard deviation of " + str(round(temperature_standard_deviation,2)))
+
+london_data.head()
+
+june = london_data.loc[london_data["month"]==6]["TemperatureC"]
+
+july = london_data.loc[london_data["month"]==7]["TemperatureC"]
+
+june_mean = np.mean(june)
+july_mean = np.mean(july)
+
+june_std = np.std(june)
+july_std = np.std(july)
+
+
+#print("The mean temperature in June was " + str(round(june_mean,2)) +" while the mean temperature in July was " + str(round(july_mean, 2)))
+
+#print(round(june_std,2))
+#print(round(july_std,2))
+
+for i in range(1, 13):
+  month = london_data.loc[london_data["month"]== i]["TemperatureC"]
+  print("The mean temperature in month " + str(i) +" is " + str(round(np.mean(month),2)))
+  print("The standard deviation of temperature in month " + str(i) +" is " +str(round(np.std(month),2)) + "\n")
